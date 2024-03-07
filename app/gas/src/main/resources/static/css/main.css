@@ -1,0 +1,57 @@
+:root { 
+    --clr-p: #7B52AE;
+    --clr-s: #56941E;
+    --clr-gw: ghostwhite;
+    --ff-madimi: "Madimi One", sans-serif;
+}
+
+*,::after,::before {
+    box-sizing: border-box;
+    margin: 0;
+    border: 0;
+}
+
+body{
+    height: 100vh;
+}
+
+img{
+    max-width: 100%;
+}
+
+button,input{
+    font:inherit;
+}
+
+header{
+    background-color: var(--clr-p);
+    color: var(--clr-gw);
+    width: 100%;
+    padding: 0.8em;
+    text-align: center;
+    font-family: var(--ff-madimi);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+header span{
+    font-size: 2.2em;
+}
+
+.container {
+    margin: 1em auto;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--ff-madimi);
+    
+}
+
+.container .auth{
+    margin-bottom: 0.8em;
+    border-radius: 6px;
+    padding: 0.4em 0.2em;
+    background: var(--clr-s);
+    color: var(--clr-gw);
+}
