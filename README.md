@@ -1,4 +1,4 @@
-# Web Application per GAS giardino di San Francesco
+# Web Application per GAS
 
 Sono parte di un GAS che ancora gestisce molte cose via mail e con appunti manuali.
 
