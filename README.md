@@ -43,7 +43,7 @@ Ecco come potrebbero funzionare invece le cose:
 ## Attori
 
 No il teatro non c' entra. Ma per capire come far funzionare un' applicazione è necessario prevedere
-gli attori coinvolti. Chiarisco subito il mistero individuando 3 attori principali:
+gli attori coinvolti. Chiarisco subito il mistero individuando i 3 attori principali:
  - Amministratori
  - Gestori
  - Gasisti
@@ -53,17 +53,25 @@ il gestore quelle dei gasisti e il gasista solo le sue proprie.
 
 **1. Amministratore** <br>
 L' amministratore è colei (o colui) che tutto può e vede (parlo solo del GAS naturalmente).Infatti può:
- - vedere l' elenco dei gasisti (nome, cognome, email)
- - accettare un nuovo gasista perché entri a far parte del circuito
- - promuovere un gasista a gestore di ordine
+ - vedere l' elenco dei gasisti (nome, cognome, email, ruolo: semplice gasista, referente, amministratore)
 
-**2. Gestore** <br>
- Il gestore può:
+ - accettare un nuovo gasista perché entri a far parte del circuito. 
+ Quando un nuovo gasista vuole entrare nel circuito, si registra sull' applicazione e poi attende l'approvazione da parte dell' amministratore
+ 
+ - promuovere un gasista a referente di ordine. 
+ Dall' elenco dei gasisti l' amministratore può promuoverne uno a referente.
+
+ - eliminare un gasista dall' elenco.
+ Se per qualsiasi motivo qualcuno uscisse dal circuito
+
+**2. Referente** <br>
+ Il referente può:
  - inserire un fornitore
  - associare ad un fornitore un elenco di prodotti disponibili
  - creare un ordine selezionando, tra i prodotti legati al fornitore, quelli disponibili per quest' ordine, e inserendo una data fine
  - monitorare l' andamento degli ordini
  - estrarre l' ordine completo per inviarlo al fornitore 
+ - segnare, in fase di consegna o anche dopo, da chi ha ricevuto il pagamento
 
 **3. Gasista** <br>
  Il gasista può:
@@ -73,5 +81,5 @@ L' amministratore è colei (o colui) che tutto può e vede (parlo solo del GAS n
 
 ## STACK TECNOLOGICO
 
-L' idea è quella di usare un full stack di questo tipo:
- Spring, Postgresql (Supabase), Htmx, css(tailwind?)
+L' idea è quella di usare uno stack di questo tipo:
+ Spring, Postgresql, Htmx, css
