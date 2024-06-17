@@ -1,0 +1,88 @@
+:root {
+    --clr-heading: firebrick;
+    --ff: "Ubuntu", sans-serif;
+}
+
+*,::after,::before {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    background-image: url("/assets/gasbg.jpg");
+    background-size:     cover;
+    background-repeat:   no-repeat;
+    background-position: center center;
+    font-family: var(--ff); 
+}
+
+h1 {
+    font-size: 1.6em;
+}
+
+h2 {
+    font-size: 1.4em;
+}
+
+img {
+    max-width: 100%;
+}
+
+input,button {
+    font:inherit;
+    color: inherit;
+}
+
+.header {
+    padding: 1em;
+    background-color: rgba(255,255,255,0.6);
+    color: var(--clr-heading);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 90%;
+    margin: 1em auto;
+}
+
+.container .reg-form {
+    background-color: rgba(255,255,255,0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    padding: 2em;
+
+}
+
+.reg-form input {
+    padding:0.7em 0.3em;
+    border: 0;
+    border-radius: 4px;
+}
+
+.reg-form .errore {
+    border: 2px solid red;
+}
+
+.reg-form input:focus {
+    outline: none;
+}
+
+.reg-form__btn-reg {
+    background: none;
+    border:none;
+    color: #0070E0;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.reg-form__errori ul {
+    list-style: none;
+    color: red;
+}

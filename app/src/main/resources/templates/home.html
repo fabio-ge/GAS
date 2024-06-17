@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Giardino di San Francesco</h1>
+        <h2 th:if="${ user != null }">Benvenuto/a <th:block th:text="${user.nome}"></th:block></h2>
+        <a th:if="${ user != null }" href="/logout">Esci</a>
+    </header>
+    <a sec:authorize="hasAuthority('ADMIN')"href="/abilita">Abilita utenti</a>
+    <div class="container">
+        <form th:if="${user == null}" th:object="${user}" class="reg-form" action="/register" method="post">
+            <input type="text" th:value="${userPayload != null ? userPayload.nome : ''}" name="nome" placeholder="nome..." th:class="${#lists.contains(erroriLabel,'nome') ? 'errore' : ''}">
+            <input type="text" th:value="${userPayload != null ? userPayload.cognome : ''}" name="cognome" placeholder="cognome..." th:class="${#lists.contains(erroriLabel,'cognome') ? 'errore' : ''}">
+            <input type="email"th:value="${userPayload != null ? userPayload.email : ''}" name="email" placeholder="email..." th:class="${#lists.contains(erroriLabel,'email') ? 'errore' : ''}">
+            <input type="password" th:value="${userPayload != null ? userPayload.password : ''}" name="password" placeholder="password..." th:class="${#lists.contains(erroriLabel,'password') ? 'errore' : ''}">
+            <p> <button type="submit" class="reg-form__btn-reg">Registrati</button> / <a href="/login">Entra</a></p>
+            <!--input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /-->
+            <div class="reg-form__errori">
+                <ul>
+                    <li th:each="errore : ${errori}">
+                        <span th:text="${errore.messaggio}"></span>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        
+    </div>
+</body>
+</html>
