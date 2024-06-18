@@ -3,9 +3,9 @@
 Sono parte di un GAS che ancora gestisce molte cose via mail e con appunti manuali.
 
 <ins>Capita</ins>, ad esempio, che un gasista faccia un ordine e poi cerchi di contattare (via mail o tel) il
-gestore dell' ordine per sapere se la sua ordinazione è confermata o meno 😱
+referente dell' ordine per sapere se la sua ordinazione è confermata o meno 😱
 
-<ins>Capita</ins> che il gestore di un ordine si faccia mandare delle mail e registri tutto su un foglio
+<ins>Capita</ins> che il referente di un ordine si faccia mandare delle mail e registri tutto su un foglio
 per poi perdere o l' uno o le altre e debba chiedere nuovamente ai gasisti di ordinare 😱
 
 <ins>Capita</ins>... insomma ho reso l' idea.
@@ -16,7 +16,7 @@ L' applicazione si concentra esclusivamente sul GAS in questione, perciò non pr
 ## Cosa succede
 
 Di solito le cose funzionano così: 
- - A.  qualche volenteroso(aka *Gestore*) si occupa di contattare un fornitore che conosce 
+ - A.  qualche volenteroso(aka *Referente*) si occupa di contattare un fornitore che conosce 
  - B.  si fa dare una disponibilità di prodotti e i relativi costi
  - C.  stabilisce una data di consegna della merce
  - D.  organizza queste informazioni in un excel (online o meno)
@@ -35,8 +35,8 @@ Ecco come potrebbero funzionare invece le cose:
  - C. nell' applicazione crea un ordine inserendo i prodotti disponibili e una data in cui termina l' ordine.
  - D. i gasisti ricevono in automatico una mail che li informa che è presente un nuovo ordine. Se qualcuno non legge la mail, ma si collega all' applicazione, vede comunque gli ordini aperti al momento.
  - E. il gasista effettua l' ordine dall' applicazione
- - F. il gestore vede il riepilogo di tutti gli ordini effettuati con i totali già calcolati e può usare questo per inviarlo al fornitore
- - G. il gestore si prepara a ricevere la consegna e smistare i prodotti
+ - F. il referente vede il riepilogo di tutti gli ordini effettuati con i totali già calcolati e può usare questo per inviarlo al fornitore
+ - G. il referente si prepara a ricevere la consegna e smistare i prodotti
 
 
 
@@ -83,3 +83,57 @@ L' amministratore è colei (o colui) che tutto può e vede (parlo solo del GAS n
 
 L' idea è quella di usare uno stack di questo tipo:
  Spring, Postgresql, Htmx, css
+
+**SQL** <br>
+
+```sql
+
+CREATE TABLE users (
+  id int NOT NULL AUTO_INCREMENT primary key,
+  email varchar(255) NOT NULL unique,
+  is_active int NOT NULL,
+  password varchar(255) DEFAULT NULL,
+  registration_date datetime(6) DEFAULT NULL,
+  nome varchar(255) NOT NULL,
+  cognome varchar(255) NOT NULL,
+  tipo varchar(255) NOT NULL
+);
+
+
+create table fornitore(
+ id int AUTO_INCREMENT PRIMARY KEY,
+ nome varchar(255) NOT NULL,
+ descrizione varchar(2000),
+ cell int,
+ mail varchar(255)
+);
+
+create table tipo_quantita(
+	id int primary key,
+	descrizione varchar(255)
+);
+
+insert into tipo_quantita
+  values(1,'Pezzi');
+  
+insert into tipo_quantita
+  values(2,'KG');
+  
+insert into tipo_quantita
+    values(3,'Vasetti');
+
+
+
+/*Al momento il prodotto è per forza relativo ad un fornitore*/
+create table prodotto(
+	id int auto_increment primary key,
+	id_fornitore int not null,
+    nome varchar(255),
+    descrizione varchar(1000),
+    tipo_quantita int,
+    prezzo_unitario double,
+    foreign key (id_fornitore) references fornitore(id),
+    foreign key (tipo_quantita) references tipo_quantita(id)
+);
+
+```

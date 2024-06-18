@@ -29,7 +29,11 @@ public class WebSecurityConfig {
     "/*.css",
     "/*.js",
     "/*.js.map",
-    "/fonts**", "/favicon.ico", "/resources/**", "/error","/home"};
+    "/fonts**", 
+    "/favicon.ico", 
+    "/resources/**", 
+    "/error",
+    "/home"};
 
     public WebSecurityConfig(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;

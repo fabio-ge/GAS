@@ -8,9 +8,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fabio.autenticazione.DTO.ErroreDto;
 import com.fabio.autenticazione.DTO.RegistrationRequestDTO;
@@ -55,19 +58,26 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/abilita")
-    public String abilita(Model model) {
-        model.addAttribute("utenti",userService.getAllInactiveUsers());
-        return "abilita";
-    }
-
-    @GetMapping("/abilita/{id}")
-    public String abilitaUser(@PathVariable int id) {
+    @PutMapping("/abilita/{id}")
+    public String abilitaUser(@PathVariable int id, Model model) {
         
-        userService.abilitaUser(id);
-        return "redirect:/abilita";
+        model.addAttribute("utente",userService.abilitaUser(id));
+        return "fragments :: utente-admin";
     }
 
+    @PutMapping("/promuovi/{id}")
+    public String promuoviUser(@PathVariable int id, Model model) {
+        /*Promuovi: cioè da semplice GASISTA passi a REFERENTE*/
+        model.addAttribute("utente",userService.promuoviUser(id));
+        return "fragments :: utente-admin";
+    }
+
+    @ResponseBody
+    @DeleteMapping("/delete/{id}")
+    public String cancellaUser(@PathVariable int id) {
+        userService.deleteUser(id);
+        return "";
+    }
 
     private List<ErroreDto> checkRegistration(RegistrationRequestDTO payload) {
         List<ErroreDto> errori = new ArrayList<>();

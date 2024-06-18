@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abilita</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Giardino di San Francesco</h1>
+    </header>
+    <div class="container">
+        <!-- PARTE ADMIN-->
+        <div th:fragment="utentelist-admin" sec:authorize="hasAuthority('ADMIN')" class="utenti-admin">
+            <nav hx-swap-oob="true" id="main-nav" th:if="${user != null}">
+                <a hx-get="/abilita" hx-target="#main" class="active" sec:authorize="hasAuthority('ADMIN')" href="#">Admin</a>
+                <a hx-get="/refactions" hx-target="#main" sec:authorize="hasAuthority('ADMIN') or hasAuthority('REFERENTE')" href="#">Referente</a>
+                <a hx-get="/gasactions" hx-target="#main" href="#">Gasista</a>
+            </nav>
+            
+            <h3>In questa sezione puoi svolgere le operazioni dell' amministratore.</h3>
+       
+            <div  class="utenti-admin__utente" th:each="utente : ${utenti}">
+                <p><th:block th:text="${utente.user.nome}"></th:block>  <th:block th:text="${utente.user.cognome}"></th:block></p>
+                <p th:text="${utente.user.email}"></p>
+                <p th:text="${utente.ruolo}"></p>
+                <p  
+                    class="utenti-admin__utente--button" 
+                    th:if="${utente.user.isActive==0}" 
+                    th:hx-put="@{| /abilita/${utente.user.id} |}"
+                    hx-target="closest div"
+                    hx-swap="outerHTML">Abilita
+                </p>
+                <p  
+                    class="utenti-admin__utente--button cancella"
+                    href="#"
+                    th:hx-delete="@{| /delete/${utente.user.id} |}"
+                    hx-target="closest div"
+                    hx-swap="outerHTML">
+                    Cancella
+                </p>
+                <p 
+                    class="utenti-admin__utente--button"
+                    th:if="${utente.user.tipo == 0}"
+                    th:hx-put="@{| /promuovi/${utente.user.id} |}"
+                    hx-target="closest div"
+                    hx-swap="outerHTML">
+                        Referente
+                </p>
+                <hr>
+            </div>
+        </div>
+
+        <div th:fragment="utente-admin" class="utenti-admin__utente">
+            <p><th:block th:text="${utente.user.nome}"></th:block>  <th:block th:text="${utente.user.cognome}"></th:block></p>
+            <p th:text="${utente.user.email}"></p>
+            <p th:text="${utente.ruolo}"></p>
+            <p  
+                class="utenti-admin__utente--button"
+                th:if="${utente.user.isActive==0}" 
+                th:hx-put="@{| /abilita/${utente.user.id} |}"
+                hx-target="closest div"
+                hx-swap="outerHTML">Abilita
+            </p>
+            <p      class="utenti-admin__utente--button cancella"
+                    th:hx-delete="@{| /delete/${utente.user.id} |}"
+                    hx-target="closest div"
+                    hx-swap="outerHTML">
+                    Cancella
+                
+            </p>
+            <p 
+                th:if="${utente.user.tipo == 0}"
+                th:hx-put="@{| /promuovi/${utente.user.id} |}"
+                hx-target="closest div"
+                hx-swap="outerHTML">
+                Referente
+            </p>
+            <hr>
+        </div>
+        <!-- FINE PARTE ADMIN-->
+        <!-- PARTE REFERENTE -->
+        <div th:fragment="referente-section" sec:authorize="hasAuthority('REFERENTE') or hasAuthority('ADMIN')">
+            <nav hx-swap-oob="true" id="main-nav" th:if="${user != null}">
+                <a hx-get="/abilita" hx-target="#main" sec:authorize="hasAuthority('ADMIN')" href="#">Admin</a>
+                <a hx-get="/refactions" hx-target="#main" class="active" sec:authorize="hasAuthority('ADMIN') or hasAuthority('REFERENTE')" href="#">Referente</a>
+                <a hx-get="/gasactions" hx-target="#main" href="#">Gasista</a>
+            </nav>
+            <ul>
+                <li>
+                    <a 
+                        hx-get="/ref/inserisci"
+                        hx-target="#ref-content" 
+                        href="#">
+                        Inserisci fornitore
+                    </a>
+                </li>
+                <li><a href="#">Crea archivio prodotti</a></li>
+                <li><a href="#">Gestisci ordini</a></li>
+            </ul>
+            <div id="ref-content">
+
+            </div>
+        </div> 
+
+        <!-- NUOVO FORNITORE -->
+         <form
+            class="nuovo-fornitore" 
+            th:fragment="nuovo-fornitore" 
+            th:object="${newFornitore}"
+            hx-post="/ref/inserisci"
+            hx-swap="outerHTML">
+            <h3>Inserisci un nuovo fornitore</h3>
+            <input type="text" name="nome" placeholder="nome del fornitore...">
+            <textarea name="descrizione" placeholder="breve descrizione..."></textarea>
+            <input type="number" name="cell" placeholder="cellulare...">
+            <input type="mail" name="mail" placeholder="mail...">
+            <button type="submit">Inserisci</button>
+        </form>
+        <!-- FINE PARTE REFERENTE -->
+        <!-- PARTE GASISTA -->
+        <div th:fragment="gasista-section">
+            <nav hx-swap-oob="true" id="main-nav" th:if="${user != null}">
+                <a hx-get="/abilita" hx-target="#main" sec:authorize="hasAuthority('ADMIN')" href="#">Admin</a>
+                <a hx-get="/refactions" hx-target="#main" sec:authorize="hasAuthority('ADMIN') or hasAuthority('REFERENTE')" href="#">Referente</a>
+                <a hx-get="/gasactions" hx-target="#main" href="#" class="active">Gasista</a>
+            </nav>
+            <h3>In questa sezione puoi svolgere le operazione del gasista</h3>
+        </div> 
+        <!-- FINE PARTE GASISTA -->
+    </div>
+</body>
+</html>
