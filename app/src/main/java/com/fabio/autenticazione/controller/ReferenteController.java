@@ -11,6 +11,8 @@ import com.fabio.autenticazione.service.FornitoreService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
@@ -41,5 +43,13 @@ public class ReferenteController {
                 </div>
                 """;
     }
+
+    @GetMapping("/prodotti")
+    public String getMethodName(Model model) {
+
+        model.addAttribute("fornitori", fornitoreService.getAllFornitori());
+        return "fragments :: prodotti";
+    }
+    
     
 }

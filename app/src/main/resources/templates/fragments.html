@@ -96,7 +96,11 @@
                         Inserisci fornitore
                     </a>
                 </li>
-                <li><a href="#">Crea archivio prodotti</a></li>
+                <li>
+                    <a 
+                        hx-get="/ref/prodotti"
+                        hx-target="#ref-content" 
+                        href="#">Crea archivio prodotti</a></li>
                 <li><a href="#">Gestisci ordini</a></li>
             </ul>
             <div id="ref-content">
@@ -118,6 +122,14 @@
             <input type="mail" name="mail" placeholder="mail...">
             <button type="submit">Inserisci</button>
         </form>
+
+        <div th:fragment="prodotti">
+            
+            <select name="fornitore">
+                <option value="-1">Seleziona un fornitore</option>
+                <option th:value="${fornitore.id}" th:each="fornitore : ${fornitori}"><th:block th:text="${fornitore.nome}"></th:block></option>
+            </select>
+        </div>
         <!-- FINE PARTE REFERENTE -->
         <!-- PARTE GASISTA -->
         <div th:fragment="gasista-section">

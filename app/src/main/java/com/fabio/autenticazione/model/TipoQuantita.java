@@ -15,29 +15,19 @@ import lombok.ToString;
 import java.util.List;
 
 @Entity
-@Table(name = "fornitore")
+@Table(name ="tipo_quantita")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Fornitore {
+public class TipoQuantita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "nome")
-    private String nome;
-
     @Column(name = "descrizione")
     private String descrizione;
 
-    @Column(name ="cell")
-    private int cell;
-
-    @Column(name = "mail")
-    private String mail;
-
-    @OneToMany(mappedBy = "fornitore")
-    private List<Prodotto> prodotti;
-
+    @OneToMany(mappedBy="tipoQuantita")
+    List<Prodotto> prodotti;
 }

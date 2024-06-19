@@ -126,8 +126,8 @@ insert into tipo_quantita
 
 /*Al momento il prodotto è per forza relativo ad un fornitore*/
 create table prodotto(
-	id int auto_increment primary key,
-	id_fornitore int not null,
+	  id int auto_increment primary key,
+	  id_fornitore int not null,
     nome varchar(255),
     descrizione varchar(1000),
     tipo_quantita int,
