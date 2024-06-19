@@ -26,6 +26,10 @@ h2 {
     font-size: 1.4em;
 }
 
+h1,h2,h3,h4,h5,h6 {
+    color: var(--clr-heading);
+}
+
 img {
     max-width: 100%;
 }
@@ -151,4 +155,29 @@ nav {
     padding: 0.3em 0.6em;
     cursor: pointer;
 
+}
+
+.fornitore-presentazione {
+    text-align: center;
+}
+
+.fornitore-prodotti__prodotti {
+    margin-top: 1em;
+}
+
+.fornitore-prodotti__prodotti ul {
+    list-style: none;
+}
+
+.fornitore-prodotti__prodotti__aggiungi {
+    border: 2px solid salmon;
+    margin-top: 2em;
+    padding: 1em;
+}
+
+.fornitore-prodotti__prodotti__aggiungi form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

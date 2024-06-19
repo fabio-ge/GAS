@@ -35,7 +35,7 @@ public class Prodotto {
     private Double prezzoUnitario;
     
     @ManyToOne
-    @JoinColumn(name ="fornitore_id")
+    @JoinColumn(name ="id_fornitore")
     private Fornitore fornitore;
 
     @ManyToOne
