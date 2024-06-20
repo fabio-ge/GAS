@@ -62,7 +62,7 @@ public class HomeController {
     @GetMapping("/refactions")
     public String getSezioneReferente(Model model) {
         setCurrentUserOnModel(model);
-        return "fragments :: referente-section";
+        return "fragments/referente :: referente-section";
     }
 
     @GetMapping("/gasactions")

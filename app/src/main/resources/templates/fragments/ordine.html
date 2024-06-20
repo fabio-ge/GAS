@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordine</title>
+</head>
+<body>
+    <h1>Attenzione, questi sono fragments. Non dovresti mai vedere questa pagina</h1>
+    <!-- CREA ORDINE -->
+    <div th:fragment="ordine" class="ordine">
+        
+        <select 
+            name="fornitore"
+            hx-get="/ref/nuovoordine"
+            hx-target="#nuovo-ordine"
+        >
+            <option value="-1">Seleziona un fornitore</option>
+            <option th:value="${fornitore.id}" th:each="fornitore : ${fornitori}"><th:block th:text="${fornitore.nome}"></th:block></option>
+        </select>
+        <div id="nuovo-ordine">
+
+        </div>
+    </div>
+
+    <div th:fragment="ordine-inserimento" class="ordine-ins" id="ordine-ins">
+        <h3 th:text="${fornitore.nome}" class="ordine-fornitore">Fornitore</h3>
+        <form
+            th:object="${newOrdine}" 
+            hx-post="/ref/ordine"
+            hx-target="#ordine-ins"
+            class="ordine-ins__form">
+            <input type="text" name="descrizione" placeholder="descrizione dell' ordine">
+            <input type="date" name="inizio" placeholder="data inizio">
+            <input type="date" name="fine" placeholder="data fine">
+            <div th:each="prodotto : ${fornitore.prodotti}">
+                <label th:text="${prodotto.nome}"></label>
+                <input type="checkbox" name="prodotti" th:value="${prodotto.id}">
+            </div>
+            <input type="hidden" name="idFornitore" th:value="${fornitore.id}">
+            <button type="submit">Salva</button>
+        </form>
+    </div>
+
+
+
+    <!-- FINE CREA ORDINE -->
+</body>
+</html>

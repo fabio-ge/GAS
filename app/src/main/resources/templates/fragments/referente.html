@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frammenti</title>
+</head>
+<body>
+    <h1>Attenzione, questi sono fragments. Non dovresti mai vedere questa pagina</h1>
+    
+    <!-- AZIONI -->
+    <div class="referente-section" th:fragment="referente-section" sec:authorize="hasAuthority('REFERENTE') or hasAuthority('ADMIN')">
+        <nav hx-swap-oob="true" id="main-nav" th:if="${user != null}">
+            <a hx-get="/abilita" hx-target="#main" sec:authorize="hasAuthority('ADMIN')" href="#">Admin</a>
+            <a hx-get="/refactions" hx-target="#main" class="active" sec:authorize="hasAuthority('ADMIN') or hasAuthority('REFERENTE')" href="#">Referente</a>
+            <a hx-get="/gasactions" hx-target="#main" href="#">Gasista</a>
+        </nav>
+        <ul>
+            <li>
+                <a
+                    class="referente-section__azione" 
+                    hx-get="/ref/inserisci"
+                    hx-target="#ref-content" 
+                    href="#">
+                        Inserisci fornitore
+                </a>
+            </li>
+            <li>
+                <a 
+                    class="referente-section__azione"
+                    hx-get="/ref/fornitori"
+                    hx-target="#ref-content" 
+                    href="#">
+                        Crea archivio prodotti
+                </a>
+            </li>
+            <li>
+                <a 
+                    class="referente-section__azione" 
+                    href="#"
+                    hx-get="/ref/ordine"
+                    hx-target="#ref-content"    
+                >
+                    Crea un ordine
+                </a>
+            </li>
+        </ul>
+        <div id="ref-content">
+
+        </div>
+    </div> 
+    <!-- FINE AZIONI -->
+    <!-- NUOVO FORNITORE -->
+     <form
+        class="nuovo-fornitore" 
+        th:fragment="nuovo-fornitore" 
+        th:object="${newFornitore}"
+        hx-post="/ref/inserisci"
+        hx-swap="outerHTML">
+        <h3>Inserisci un nuovo fornitore</h3>
+        <input type="text" name="nome" placeholder="nome del fornitore">
+        <textarea name="descrizione" placeholder="breve descrizione"></textarea>
+        <input type="number" name="cell" placeholder="cellulare">
+        <input type="mail" name="mail" placeholder="mail">
+        <button type="submit">Inserisci</button>
+    </form>
+    <!-- FINE NUOVO FORNITORE -->
+
+    <div th:fragment="fornitori" class="elenco-fornitori">
+        
+        <select 
+            name="fornitore"
+            hx-get="/ref/prodotti"
+            hx-target="#elenco-prodotti"
+        >
+            <option value="-1">Seleziona un fornitore</option>
+            <option th:value="${fornitore.id}" th:each="fornitore : ${fornitori}"><th:block th:text="${fornitore.nome}"></th:block></option>
+        </select>
+        <div id="elenco-prodotti">
+
+        </div>
+    </div>
+
+
+    <div th:fragment="fornitore-prodotti" class="fornitore-presentazione">
+        <h3 th:text="${fornitore.nome}"></h3>
+        <h4 th:text="${fornitore.descrizione}"></h4>
+        <h5 th:text="${fornitore.cell}"></h5>
+        <h5 th:text="${fornitore.mail}"></h5>
+        <div class="fornitore-prodotti__prodotti">
+            <p>Elenco dei prodotti</p>
+            <ul id="lista-prodotti">
+                <li th:each="prodotto : ${fornitore.prodotti}">
+                    <th:block th:text="${prodotto.nome}"></th:block>,
+                    <th:block th:text="${prodotto.descrizione}"></th:block>
+                    prezzo: <th:block th:text="${prodotto.prezzoUnitario}"></th:block>
+                    <button th:hx-delete="@{| /prodotto/delete/${prodotto.id} |}" hx-target="closest li" hx-swap="outerHTML">❌</button>
+                </li>
+            </ul>
+            <div id="aggiungi-prodotto" class="fornitore-prodotti__prodotti__aggiungi">
+                <p>Aggiungi un prodotto</p>
+                <form 
+                    th:object="${nuovoProdotto}"
+                    th:hx-post="@{| /prodotto/${fornitore.id} |}"
+                    hx-target="#lista-prodotti"
+                    hx-swap="beforeend"    
+                >
+                    <input type="text" name="nome" placeholder="nome"/>
+                    <input type="text" name="descrizione" placeholder="descrizione"/>
+                    <input type="text" name="prezzoUnitario" placeholder="prezzo per unità"/>
+                    <select name="idTipo">
+                        <option th:each="tipo : ${tipi}" th:value="${tipo.id}"><th:block th:text="${tipo.descrizione}"></th:block></option>
+                    </select>
+                    <button type="submit">➕</button>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+
+    <li th:fragment="fornitore-prodotto">
+        <div hx-swap-oob="true" id="aggiungi-prodotto" class="fornitore-prodotti__prodotti__aggiungi">
+            <p>Aggiungi un prodotto</p>
+            <form 
+                th:object="${nuovoProdotto}"
+                th:hx-post="@{| /prodotto/${idFornitore} |}"
+                hx-target="#lista-prodotti"
+                hx-swap="beforeend"    
+            >
+                <input type="text" name="nome" placeholder="nome"/>
+                <input type="text" name="descrizione" placeholder="descrizione"/>
+                <input type="text" name="prezzoUnitario" placeholder="prezzo per unità"/>
+                <select name="idTipo">
+                    <option th:each="tipo : ${tipi}" th:value="${tipo.id}"><th:block th:text="${tipo.descrizione}"></th:block></option>
+                </select>
+                <button type="submit">➕</button>
+            </form>
+        </div>
+        <th:block th:text="${prodotto.nome}"></th:block>,
+        <th:block th:text="${prodotto.descrizione}"></th:block>
+        prezzo: <th:block th:text="${prodotto.prezzoUnitario}"></th:block>
+        <button th:hx-delete="@{| /prodotto/delete/${prodotto.id} |}" hx-target="closest li" hx-swap="outerHTML">❌</button>
+    </li>
+
+</body>
+</html>

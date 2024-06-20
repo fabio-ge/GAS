@@ -136,4 +136,20 @@ create table prodotto(
     foreign key (tipo_quantita) references tipo_quantita(id)
 );
 
+create table ordine(
+  id int auto_increment primary key,
+  id_fornitore int not null,
+  inizio date,
+  fine date,
+  descrizione varchar(1023),
+  foreign key (id_fornitore) references fornitore(id)
+);
+
+create table prodotto_ordine(
+  id_prodotto int not null,
+  id_ordine int not null,
+  foreign key (id_prodotto) references prodotto(id),
+  foreign key (id_ordine) references ordine(id)
+);
+
 ```
