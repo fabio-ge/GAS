@@ -80,16 +80,6 @@
             <hr>
         </div>
         <!-- FINE PARTE ADMIN-->
-        <!-- PARTE GASISTA -->
-        <div th:fragment="gasista-section">
-            <nav hx-swap-oob="true" id="main-nav" th:if="${user != null}">
-                <a hx-get="/abilita" hx-target="#main" sec:authorize="hasAuthority('ADMIN')" href="#">Admin</a>
-                <a hx-get="/refactions" hx-target="#main" sec:authorize="hasAuthority('ADMIN') or hasAuthority('REFERENTE')" href="#">Referente</a>
-                <a hx-get="/gasactions" hx-target="#main" href="#" class="active">Gasista</a>
-            </nav>
-            <h3>In questa sezione puoi svolgere le operazione del gasista</h3>
-        </div> 
-        <!-- FINE PARTE GASISTA -->
     </div>
 </body>
 </html>

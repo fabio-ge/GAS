@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 @ToString
 @AllArgsConstructor
@@ -45,4 +47,7 @@ public class User {
     
     @Column(name = "tipo")
     private int tipo;
+
+    @OneToMany(mappedBy = "user")
+    private List<AcquistoOrdine> acquisti;
 }

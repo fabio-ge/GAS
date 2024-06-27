@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- PARTE GASISTA -->
+    <div th:fragment="gasista-section">
+        <nav hx-swap-oob="true" id="main-nav" th:if="${user != null}">
+            <a hx-get="/abilita" hx-target="#main" sec:authorize="hasAuthority('ADMIN')" href="#">Admin</a>
+            <a hx-get="/refactions" hx-target="#main" sec:authorize="hasAuthority('ADMIN') or hasAuthority('REFERENTE')" href="#">Referente</a>
+            <a hx-get="/gasactions" hx-target="#main" href="#" class="active">Gasista</a>
+        </nav>
+        <div class="gasista-container">
+            <h3>Ecco gli ordini attivi</h3>
+            <ul>
+                <form></form>
+                <li th:each="ordine : ${ordini}">
+                    <h4 th:text="${ordine.nomeFornitore}"></h4>
+                    <h5 th:text="${ordine.descrizione}"></h5>
+                    <p>dal <th:block th:text="${ordine.inizio}"></th:block> al <th:block th:text="${ordine.fine}"></th:block></p>
+                    
+                    <ul>
+                        <li th:each="prodotto : ${ordine.prodottiDisponibili}">
+                            <input type="text" name="prodotti" placeholder="quantità" th:data-id-prodotto="${prodotto.id}" class="gasista-container__quantita">
+                            <th:block th:text="${prodotto.nome}"></th:block>
+                            <th:block th:text="${prodotto.descrizione}"></th:block>
+                            <th:block th:text="${prodotto.prezzoUnitario}"></th:block>
+                            
+                        </li>
+                    </ul>
+                    <button 
+                        th:hx-post="@{| /gas/acquista/${ordine.id} |}"
+                        hx-target="#ordini-fatti"
+                        hx-vals="js:{prodotti: getDatiAcquisto()}">Acquista</button>
+                    <hr>
+                </li>
+            </ul>
+            <h3>Ordini fatti</h3>
+            <div id="ordini-fatti"></div>
+        </div>
+        <script>
+            function getDatiAcquisto() {
+                let prodotti = []
+                
+    
+                document.querySelectorAll('.gasista-container__quantita').forEach(p => {
+                    let val = p.value
+                    if(val) {
+                        prodotti.push({id: p.dataset.idProdotto, quantita: val})
+                    } 
+                })
+    
+                return prodotti;
+            }
+         </script>
+    </div> 
+    <!-- FINE PARTE GASISTA -->
+</body>
+</html>

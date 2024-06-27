@@ -1,7 +1,5 @@
 package com.fabio.autenticazione.model;
 
-import java.util.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,40 +7,37 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
-@Table(name = "ordine")
-public class Ordine {
-    
+@Table(name = "acquisto_ordine")
+public class AcquistoOrdine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @Column(name = "inizio")
-    private Date inizio;
-    @Column(name = "fine")
-    private Date fine;
-    @Column(name = "descrizione")
-    private String descrizione;
 
     @ManyToOne
-    @JoinColumn(name = "id_fornitore")
-    private Fornitore fornitore;
+    @JoinColumn(name = "id_user")
+    private User user;
 
-    @OneToMany(mappedBy = "ordine")
-    private List<AcquistoOrdine> acquisti;
+    @ManyToOne
+    @JoinColumn(name = "id_ordine")
+    private Ordine ordine;
 
-
+    @ManyToOne
+    @JoinColumn(name = "id_prodotto")
+    private Prodotto prodotto;
+    
+    @Column(name = "quantita")
+    private int quantita;
+    
 }

@@ -244,3 +244,15 @@ select {
 .ordine-fornitore {
     text-transform: uppercase;
 }
+
+.gasista-container {
+    text-align: center;
+}
+
+.gasista-container ul {
+    list-style: none;
+}
+
+.gasista-container__quantita {
+    width: 50px;
+}

@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fabio.autenticazione.DTO.RegistrationRequestDTO;
 import com.fabio.autenticazione.model.User;
+import com.fabio.autenticazione.service.OrdineService;
 import com.fabio.autenticazione.service.UserService;
 
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
@@ -24,10 +24,13 @@ import java.util.List;
 public class HomeController {
     
     private final UserService userService;
+    private final OrdineService ordineService;
 
 
-    public HomeController(UserService userService) {
+    public HomeController(UserService userService,
+                          OrdineService ordineService) {
         this.userService = userService;
+        this.ordineService = ordineService;
     }
 
     @GetMapping
@@ -68,7 +71,8 @@ public class HomeController {
     @GetMapping("/gasactions")
     public String getSezioneGas(Model model) {
         setCurrentUserOnModel(model);
-        return "fragments :: gasista-section";
+        model.addAttribute("ordini", ordineService.getAllOrdiniAttivi());
+        return "fragments/gasista :: gasista-section";
     }
 
     private void setCurrentUserOnModel(Model model) {

@@ -152,4 +152,15 @@ create table prodotto_ordine(
   foreign key (id_ordine) references ordine(id)
 );
 
+create table acquisto_ordine(
+  id int auto_increment primary key,
+  id_user int not null,
+  id_ordine int not null,
+  id_prodotto int not null,
+  quantita int not null
+  foreign key (id_user) references users(id) 
+  foreign key (id_ordine) references ordine(id),
+  foreign key (id_prodotto) references prodotto(id)
+);
+
 ```
