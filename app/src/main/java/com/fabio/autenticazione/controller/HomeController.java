@@ -1,16 +1,13 @@
 package com.fabio.autenticazione.controller;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fabio.autenticazione.DTO.RegistrationRequestDTO;
 import com.fabio.autenticazione.model.User;
+import com.fabio.autenticazione.service.AcquistoOrdineService;
 import com.fabio.autenticazione.service.OrdineService;
 import com.fabio.autenticazione.service.UserService;
 
@@ -25,12 +22,15 @@ public class HomeController {
     
     private final UserService userService;
     private final OrdineService ordineService;
+    private final AcquistoOrdineService acquistoOrdineService;
 
 
     public HomeController(UserService userService,
-                          OrdineService ordineService) {
+                          OrdineService ordineService,
+                          AcquistoOrdineService acquistoOrdineService) {
         this.userService = userService;
         this.ordineService = ordineService;
+        this.acquistoOrdineService = acquistoOrdineService;
     }
 
     @GetMapping
@@ -72,6 +72,8 @@ public class HomeController {
     public String getSezioneGas(Model model) {
         setCurrentUserOnModel(model);
         model.addAttribute("ordini", ordineService.getAllOrdiniAttivi());
+        model.addAttribute("ordiniFatti",acquistoOrdineService.getAcquistiByUser());
+        System.out.println(acquistoOrdineService.getAcquistiByUser().toString());
         return "fragments/gasista :: gasista-section";
     }
 

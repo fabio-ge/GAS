@@ -3,6 +3,7 @@ package com.fabio.autenticazione.service;
 import org.springframework.stereotype.Service;
 
 import com.fabio.autenticazione.DTO.AcquistoOrdineDTO;
+import com.fabio.autenticazione.DTO.ProdottoAcquistoDTO;
 import com.fabio.autenticazione.DTO.ProdottoAcquistoSaveDTO;
 import com.fabio.autenticazione.Repository.AcquistoOrdineRepo;
 import com.fabio.autenticazione.Repository.OrdineRepo;
@@ -12,6 +13,7 @@ import com.fabio.autenticazione.model.Ordine;
 import com.fabio.autenticazione.model.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -52,10 +54,36 @@ public class AcquistoOrdineService {
         List<AcquistoOrdine> acquisti = acquistoOrdineRepo.findByUser(userService.getCurrentUser());
         List<AcquistoOrdineDTO> acquistiDTO = new ArrayList<>();
         
-        acquisti.stream().forEach(a -> {
-            //TODO: ordinare per id ordine e costruire un oggetto, con lista di acquisti, per ogni ordine
-        });
+        Collections.sort(acquisti,(AcquistoOrdine a, AcquistoOrdine b) -> a.getOrdine().getId() - b.getOrdine().getId());
+
+        AcquistoOrdineDTO acquistoOrdine = new AcquistoOrdineDTO(null, null, null, null, 0.0);
+        
+        for(AcquistoOrdine a : acquisti){
+            if(acquistoOrdine.getIdOrdine()== null || a.getOrdine().getId() != acquistoOrdine.getIdOrdine()){
+                if(acquistoOrdine.getIdOrdine() != null){
+                    acquistoOrdine.setTotale(calcolaTotale(acquistoOrdine));
+                    acquistiDTO.add(acquistoOrdine);
+                }
+                acquistoOrdine = new AcquistoOrdineDTO(a.getOrdine().getId(), a.getOrdine().getFornitore().getNome(), a.getOrdine().getDescrizione(), new ArrayList<>(), 0.0);
+                aggiungiProdottoAOrdine(acquistoOrdine,a);
+            }else {
+                aggiungiProdottoAOrdine(acquistoOrdine,a);
+            }
+        }
+
+        acquistoOrdine.setTotale(calcolaTotale(acquistoOrdine));
+        acquistiDTO.add(acquistoOrdine);
 
         return acquistiDTO;
+    }
+
+    private void aggiungiProdottoAOrdine(AcquistoOrdineDTO aoDTO,AcquistoOrdine ao){
+
+        ProdottoAcquistoDTO prodotto = new ProdottoAcquistoDTO(ao.getProdotto().getNome(), ao.getQuantita(), ao.getQuantita()*ao.getProdotto().getPrezzoUnitario(), ao.getProdotto().getPrezzoUnitario());
+        aoDTO.getProdotti().add(prodotto);
+    }
+
+    private Double calcolaTotale(AcquistoOrdineDTO acquistoOrdine){
+        return acquistoOrdine.getProdotti().stream().map(el -> el.totale()).reduce(0.0, (a,b) -> a+b);
     }
 }

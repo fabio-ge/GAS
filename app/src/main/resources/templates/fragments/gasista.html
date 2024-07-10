@@ -39,7 +39,15 @@
                 </li>
             </ul>
             <h3>Ordini fatti</h3>
-            <div id="ordini-fatti"></div>
+            <div>
+                <ul id="ordini-fatti">
+                    <li th:fragment="ordini-fatti" th:each="ordineFatto : ${ordiniFatti}">
+                        <h4 th:text="${ordineFatto.nomeOrdine}"></h4>
+                        <h5 th:text="${ordineFatto.descrizione}"></h5>
+                        <h5>Totale: <th:block th:text="${ordineFatto.totale}"></th:block></h5>
+                    </li>
+                </ul>
+            </div>
         </div>
         <script>
             function getDatiAcquisto() {
@@ -53,7 +61,9 @@
                     } 
                 })
     
-                return prodotti;
+                prodotti.push({id: null,quantita: null}) //necessario perché in caso di 1 elemento solo non invia una lista
+                
+                return prodotti
             }
          </script>
     </div> 

@@ -1,6 +1,7 @@
 package com.fabio.autenticazione.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,30 +31,35 @@ public class GasistaController {
         this.acquistoOrdineService = acquistoOrdineService;
     }
 
-    @ResponseBody
     @PostMapping(value = "/acquista/{idOrdine}")
     public String acquistaFromOrdine(@PathVariable int idOrdine,
-                                     AcquistoSaveDTO payload) {
+                                     AcquistoSaveDTO payload,
+                                     Model model) {
 
-        List<ProdottoAcquistoSaveDTO> prodottiAcquistati = new ArrayList<>();                                
+        List<ProdottoAcquistoSaveDTO> prodottiAcquistati = new ArrayList<>();
+        System.out.println("ECCO i PRODOTTI"+payload.prodotti());                                
         payload.prodotti().stream().forEach(p -> {
             System.out.println("Adesso esamino "+p.toString());
             ObjectMapper mapper = new ObjectMapper();
             try {
                 Map<String,Object> map = mapper.readValue(p, Map.class);
                 System.out.println("Aggiungo il prodotto: "+map.get("id")+"-"+map.get("quantita"));
-                prodottiAcquistati.add(new ProdottoAcquistoSaveDTO(Integer.valueOf(map.get("id").toString()),Integer.valueOf(map.get("quantita").toString())));
+                if(map.get("id") != null) {
+                    prodottiAcquistati.add(new ProdottoAcquistoSaveDTO(Integer.valueOf(map.get("id").toString()),Integer.valueOf(map.get("quantita").toString())));
+                }
+                
             } catch (JsonMappingException e) {
                 e.printStackTrace();
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         });
-        System.out.println("Prodotti Acquistati finali: "+prodottiAcquistati);
+
         acquistoOrdineService.saveNewAcquisto(idOrdine,prodottiAcquistati);
 
+        model.addAttribute("ordiniFatti", acquistoOrdineService.getAcquistiByUser());
 
-        return "Prodotti acquistati con successo";
+        return "fragments/gasista :: ordini-fatti";
     }
     
 }
