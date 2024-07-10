@@ -14,5 +14,7 @@ public interface OrdineRepo extends JpaRepository<Ordine,Integer>{
               FROM Ordine o
              WHERE :oggi between o.inizio AND o.fine
             """)
-    List<Ordine> getAllOrdiniAttivi(Date oggi); 
+    List<Ordine> getAllOrdiniAttivi(Date oggi);
+    
+    List<Ordine> findByOrderByFineDesc();
 }

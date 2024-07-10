@@ -81,4 +81,14 @@ public class OrdineService {
                 })
                 .toList();
     }
+
+    public List<OrdineDTO> getAllOrdini() {
+        Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+        return ordineRepo
+                    .findByOrderByFineDesc()
+                    .stream()
+                    .map(o -> new OrdineDTO(o.getId(),o.getDescrizione(), formatter.format(o.getInizio()), formatter.format(o.getFine()), o.getFornitore().getNome(),null)
+                    ).toList();
+    }
 }

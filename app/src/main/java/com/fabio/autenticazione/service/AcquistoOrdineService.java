@@ -69,10 +69,15 @@ public class AcquistoOrdineService {
             }else {
                 aggiungiProdottoAOrdine(acquistoOrdine,a);
             }
+        
         }
 
-        acquistoOrdine.setTotale(calcolaTotale(acquistoOrdine));
-        acquistiDTO.add(acquistoOrdine);
+        if(acquisti.size() > 0) {
+            acquistoOrdine.setTotale(calcolaTotale(acquistoOrdine));
+            acquistiDTO.add(acquistoOrdine);
+        }
+        
+
 
         return acquistiDTO;
     }

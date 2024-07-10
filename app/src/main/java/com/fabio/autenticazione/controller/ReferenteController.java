@@ -85,6 +85,13 @@ public class ReferenteController {
         return successMessage("Ordine creato");
     }
 
+    @GetMapping("/gestione")
+    public String gestisciOrdine(Model model) {
+        model.addAttribute("ordini",ordineService.getAllOrdini());
+        return "fragments/gestione :: ordine";
+
+    }
+
     @GetMapping("/nuovoordine")
     public String ordinePerFornitore(@RequestParam(name = "fornitore") int idFornitore,
                                     Model model) {

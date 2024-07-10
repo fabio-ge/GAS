@@ -44,6 +44,16 @@
                     Crea un ordine
                 </a>
             </li>
+            <li>
+                <a 
+                    class="referente-section__azione" 
+                    href="#"
+                    hx-get="/ref/gestione"
+                    hx-target="#ref-content"    
+                >
+                    Gestisci un ordine
+                </a>
+            </li>
         </ul>
         <div id="ref-content">
 
@@ -66,7 +76,7 @@
     </form>
     <!-- FINE NUOVO FORNITORE -->
 
-    <div th:fragment="fornitori" class="elenco-fornitori">
+    <div th:fragment="fornitori" class="elenco-fornitori" sec:authorize="hasAuthority('REFERENTE') or hasAuthority('ADMIN')">
         
         <select 
             name="fornitore"
@@ -82,7 +92,7 @@
     </div>
 
 
-    <div th:fragment="fornitore-prodotti" class="fornitore-presentazione">
+    <div th:fragment="fornitore-prodotti" sec:authorize="hasAuthority('REFERENTE') or hasAuthority('ADMIN')" class="fornitore-presentazione">
         <h3 th:text="${fornitore.nome}"></h3>
         <h4 th:text="${fornitore.descrizione}"></h4>
         <h5 th:text="${fornitore.cell}"></h5>
@@ -118,7 +128,7 @@
         </div>
     </div>
 
-    <li th:fragment="fornitore-prodotto">
+    <li th:fragment="fornitore-prodotto" sec:authorize="hasAuthority('REFERENTE') or hasAuthority('ADMIN')">
         <div hx-swap-oob="true" id="aggiungi-prodotto" class="fornitore-prodotti__prodotti__aggiungi">
             <p>Aggiungi un prodotto</p>
             <form 
@@ -141,6 +151,9 @@
         prezzo: <th:block th:text="${prodotto.prezzoUnitario}"></th:block>
         <button th:hx-delete="@{| /prodotto/delete/${prodotto.id} |}" hx-target="closest li" hx-swap="outerHTML">❌</button>
     </li>
+
+    <!-- GESTIONE ORDINE -->
+    <!-- FINE GESTIONE ORDINE -->
 
 </body>
 </html>
